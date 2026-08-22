@@ -1,0 +1,14 @@
+{
+  "name": "postal-normalizer",
+  "version": "0.1.0",
+  "description": "Validating parser and pretty printer for US postal addresses",
+  "type": "module",
+  "main": "./dist/address.js",
+  "bin": {
+    "postal-normalizer": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "license": "MIT"
+}
