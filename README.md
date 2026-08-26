@@ -78,6 +78,15 @@ if (result.ok) {
 }
 ```
 
+## Tests
+
+```
+npm test
+```
+
+runs the parser tests with Node's built-in test runner (`node --test`), no
+extra dependencies required.
+
 ## License
 
 MIT, see LICENSE.
