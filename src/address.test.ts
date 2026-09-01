@@ -81,6 +81,19 @@ test('rejects an unrecognized state abbreviation', () => {
   assert.ok(result.errors.some((error) => error.includes('ZZ')))
 })
 
+test('rejects a zip that does not belong to the given state', () => {
+  const result = parseAddress('742 Evergreen Ter\nSpringfield, NY 62704')
+  assert.equal(result.ok, false)
+  if (result.ok) return
+  assert.ok(result.errors.some((error) => error.includes('belongs to IL')))
+})
+
+test('accepts a zip prefix that has no state assigned to it in the range table', () => {
+  // 819 falls in the unassigned gap between the CO and WY prefix ranges
+  const result = parseAddress('742 Evergreen Ter\nSomewhere, CO 81900')
+  assert.equal(result.ok, true)
+})
+
 test('rejects a malformed zip', () => {
   const result = parseAddress('742 Evergreen Ter\nSpringfield, IL 1234')
   assert.equal(result.ok, false)

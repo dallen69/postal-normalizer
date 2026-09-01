@@ -4,8 +4,9 @@ Address lines that came off a web form, a CSV export, or someone's typed-up
 notes rarely match what USPS actually expects: mixed case, stray commas,
 "Street" instead of "St", a state name instead of an abbreviation. This is a
 small parser that checks a US postal address for the things that actually
-break mail delivery (bad zip, unrecognized state, no house number) and a
-printer that reformats a valid one into USPS's plain, all-caps style.
+break mail delivery (bad zip, unrecognized state, a zip that doesn't belong
+to the given state, no house number) and a printer that reformats a valid
+one into USPS's plain, all-caps style.
 
 It only handles US addresses for now. Other countries have wildly different
 line orders and I don't want to pretend to support them until I do.
@@ -24,6 +25,13 @@ Springfield, IL 62704
 The last line must be `city, state zip` (the comma is optional). The line
 above it is the street line and must contain a house number. Anything above
 that is treated as recipient, then organization.
+
+The zip is also checked against the state: USPS hands out zip codes in
+contiguous three-digit-prefix blocks per state, so `Springfield, NY 62704`
+fails even though NY and 62704 are each valid on their own (62704 is in
+Illinois's block). A handful of prefixes are unassigned or reserved for
+military "state" codes like AE; those are left out of the table and skip
+this check rather than fail it.
 
 ## Command line usage
 
