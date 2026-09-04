@@ -73,6 +73,39 @@ Any block that fails validation gets its errors written to stderr with the
 address's position in the batch, and the process exits with a nonzero
 status. Valid blocks in the same batch still print to stdout.
 
+Pass `--json` to get structured output instead, as a JSON array with one
+entry per address block in order:
+
+```
+printf '742 Evergreen Ter\nSpringfield, IL 62704\n\nEvergreen Ter\nSpringfield, ZZ 1234\n' | node dist/cli.js --json
+```
+
+```json
+[
+  {
+    "ok": true,
+    "address": {
+      "street": "742 Evergreen Ter",
+      "city": "Springfield",
+      "state": "IL",
+      "zip": "62704"
+    },
+    "formatted": "742 EVERGREEN TER\nSPRINGFIELD IL 62704"
+  },
+  {
+    "ok": false,
+    "errors": [
+      "street line \"Evergreen Ter\" has no house number",
+      "\"ZZ\" is not a recognized state or territory abbreviation",
+      "\"1234\" is not a valid zip code"
+    ]
+  }
+]
+```
+
+With `--json`, errors go into the payload instead of stderr; the process
+still exits nonzero if any block failed.
+
 ## Library usage
 
 ```ts
